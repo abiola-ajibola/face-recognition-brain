@@ -1,0 +1,14 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow:
+
+
+
+a403429f2ddf4b49b307e318f00e528b
+
+https://samples.clarifai.com/face-det.jpg
+
+
+{position: 'absolute', top: box.topRow, bottom: box.bottomRow, left: box.leftCol, right: box.rightCol, border: 'solid green'}
+
+.StrictMode
