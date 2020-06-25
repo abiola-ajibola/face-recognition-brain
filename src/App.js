@@ -15,6 +15,7 @@ const initialState = {
   imageURL: '',
   box: [],
   visibility: 'visible',
+  numberOfFaces: 0,
   route: 'signin',
   isSignedIn: false,
   user: {
@@ -35,12 +36,16 @@ class App extends Component {
   calculateFaceLocation = (data) => {
     let temp_results = data.outputs.map(items => {
       if (items.data.regions) {
-        this.setState({ visibility: 'visible' })
+        this.setState({
+          visibility: 'visible',
+          numberOfFaces: items.data.regions.length });
+          console.log('Number of faces: ', items.data.regions.length);
         return items.data.regions.map(items2 => {
           return Object.assign(items2.region_info.bounding_box, { visibility: this.state.visibility })
         })
       } else {
-        this.setState({ visibility: 'hidden' })
+        this.setState({ visibility: 'hidden',
+          numberOfFaces: 0 })
         return [{
           visibility: this.state.visibility,
           top_row: 0,
@@ -104,7 +109,8 @@ class App extends Component {
             },
             body: JSON.stringify({
               id: this.state.user.id,
-              imgUrl: this.state.imageURL
+              imgUrl: this.state.imageURL,
+              numberOfFaces: this.state.numberOfFaces
             })
           })
             .then(response => response.json())
