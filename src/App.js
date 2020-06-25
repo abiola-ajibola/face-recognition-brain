@@ -42,7 +42,7 @@ class App extends Component {
         });
         console.log('Number of faces: ', items.data.regions.length);
         return items.data.regions.map(items2 => {
-          return Object.assign(items2.region_info.bounding_box, { visibility: this.state.visibility, numberOfFaces: this.state.numberOfFaces })
+          return Object.assign(items2.region_info.bounding_box, { visibility: this.state.visibility, numberOfFaces: items.data.regions.length })
         })
       } else {
         this.setState({
@@ -59,7 +59,6 @@ class App extends Component {
         }]
       }
     });
-
     let boxes = temp_results[0].map(temp_result => {
       return {
         top: temp_result.top_row * 100 + '%',
@@ -106,6 +105,8 @@ class App extends Component {
       .then(res => res.json())
       .then(response => {
         if (response) {
+          var faceLocation = this.calculateFaceLocation(response);
+          console.log(`Before fetch; ${this.state.numberOfFaces}`);
           fetch('https://murmuring-stream-43663.herokuapp.com/image', {
             method: 'put',
             headers: {
@@ -123,11 +124,11 @@ class App extends Component {
             })
             .catch(e => console.log(e));
         }
-        this.displayFaceBox(this.calculateFaceLocation(response));
+        this.displayFaceBox(faceLocation);
       })
       .catch(err => console.error(err));
   }
-
+  
   onRouteChange = (route) => {
     if (route === 'signin' || route === 'register') {
       this.setState(initialState);
