@@ -38,14 +38,17 @@ class App extends Component {
       if (items.data.regions) {
         this.setState({
           visibility: 'visible',
-          numberOfFaces: items.data.regions.length });
-          console.log('Number of faces: ', items.data.regions.length);
+          numberOfFaces: items.data.regions.length
+        });
+        console.log('Number of faces: ', items.data.regions.length);
         return items.data.regions.map(items2 => {
           return Object.assign(items2.region_info.bounding_box, { visibility: this.state.visibility })
         })
       } else {
-        this.setState({ visibility: 'hidden',
-          numberOfFaces: 0 })
+        this.setState({
+          visibility: 'hidden',
+          numberOfFaces: 0
+        })
         return [{
           visibility: this.state.visibility,
           top_row: 0,
