@@ -15,6 +15,7 @@ const initialState = {
   imageURL: '',
   box: [],
   visibility: 'visible',
+  numberOfFaces: 0,
   route: 'signin',
   isSignedIn: false,
   user: {
@@ -35,22 +36,29 @@ class App extends Component {
   calculateFaceLocation = (data) => {
     let temp_results = data.outputs.map(items => {
       if (items.data.regions) {
-        this.setState({ visibility: 'visible' })
+        this.setState({
+          visibility: 'visible',
+          numberOfFaces: items.data.regions.length
+        });
+        console.log('Number of faces: ', items.data.regions.length);
         return items.data.regions.map(items2 => {
-          return Object.assign(items2.region_info.bounding_box, { visibility: this.state.visibility })
+          return Object.assign(items2.region_info.bounding_box, { visibility: this.state.visibility, numberOfFaces: items.data.regions.length })
         })
       } else {
-        this.setState({ visibility: 'hidden' })
+        this.setState({
+          visibility: 'hidden',
+          numberOfFaces: 0
+        })
         return [{
           visibility: this.state.visibility,
           top_row: 0,
           bottom_row: 0,
           left_col: 0,
-          right_col: 0
+          right_col: 0,
+          numberOfFaces: 0
         }]
       }
     });
-
     let boxes = temp_results[0].map(temp_result => {
       return {
         top: temp_result.top_row * 100 + '%',
@@ -97,6 +105,8 @@ class App extends Component {
       .then(res => res.json())
       .then(response => {
         if (response) {
+          var faceLocation = this.calculateFaceLocation(response);
+          console.log(`Before fetch; ${this.state.numberOfFaces}`);
           fetch('https://murmuring-stream-43663.herokuapp.com/image', {
             method: 'put',
             headers: {
@@ -104,7 +114,8 @@ class App extends Component {
             },
             body: JSON.stringify({
               id: this.state.user.id,
-              imgUrl: this.state.imageURL
+              imgUrl: this.state.imageURL,
+              numberOfFaces: this.state.numberOfFaces
             })
           })
             .then(response => response.json())
@@ -113,11 +124,11 @@ class App extends Component {
             })
             .catch(e => console.log(e));
         }
-        this.displayFaceBox(this.calculateFaceLocation(response));
+        this.displayFaceBox(faceLocation);
       })
       .catch(err => console.error(err));
   }
-
+  
   onRouteChange = (route) => {
     if (route === 'signin' || route === 'register') {
       this.setState(initialState);
