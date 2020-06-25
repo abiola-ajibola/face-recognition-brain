@@ -42,7 +42,7 @@ class App extends Component {
         });
         console.log('Number of faces: ', items.data.regions.length);
         return items.data.regions.map(items2 => {
-          return Object.assign(items2.region_info.bounding_box, { visibility: this.state.visibility })
+          return Object.assign(items2.region_info.bounding_box, { visibility: this.state.visibility, numberOfFaces: this.state.numberOfFaces })
         })
       } else {
         this.setState({
@@ -54,7 +54,8 @@ class App extends Component {
           top_row: 0,
           bottom_row: 0,
           left_col: 0,
-          right_col: 0
+          right_col: 0,
+          numberOfFaces: 0
         }]
       }
     });
