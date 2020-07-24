@@ -12,7 +12,7 @@ class Register extends React.Component {
     }
 
     onEmailChange = (event) => {
-        this.setState({ registerEmail: event.target.value })
+        this.setState({ registerEmail: event.target.value });
         allowLoginEm = this.props.validateEm(event.target.value);
         console.log(allowLoginEm);
         console.log(event.target.value);
@@ -35,7 +35,7 @@ class Register extends React.Component {
     // On clicking register on the register page, fetch register route;
     //using post method with the given headers and body
     registerSubmit = () => {
-        fetch('https://murmuring-stream-43663.herokuapp.com/register', {
+        fetch('https://smartbrain-backend-api.herokuapp.com/register', {
             method: 'post',
             headers: {
                 'content-type': 'application/json'
@@ -63,20 +63,19 @@ class Register extends React.Component {
 
     render() {
         const { onRouteChange } = this.props;
-
         return (
-            <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-2 center">
+            <form className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-2 center">
                 <main className="pa4 black-80">
                     <div className="measure">
                         <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
                             <legend className="f1 fw6 ph0 mh0">Register</legend>
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
-                                <input className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                <input className="pa2 input-reset b--black ba bg-transparent hover-bg-black hover-white w-100"
                                     type="text"
                                     name="name"
                                     id="name"
-                                    onChange={ this.onNameChange}
+                                    onChange={this.onNameChange}
                                 />
                                 {
                                     (!allowLoginName)
@@ -88,11 +87,11 @@ class Register extends React.Component {
                             </div>
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
-                                <input className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                <input className="pa2 input-reset b--black ba bg-transparent hover-bg-black hover-white w-100"
                                     type="email"
                                     name="email-address"
                                     id="email-address"
-                                    onChange={ this.onEmailChange}
+                                    onChange={this.onEmailChange}
                                 />
                                 {
                                     (!allowLoginEm)
@@ -104,11 +103,11 @@ class Register extends React.Component {
                             </div>
                             <div className="mv3">
                                 <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
-                                    <input className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                <input className="b pa2 b--black input-reset ba bg-transparent hover-bg-black hover-white w-100"
                                     type="password"
                                     name="password"
                                     id="password"
-                                    onChange={ this.onPasswordChange}
+                                    onChange={this.onPasswordChange}
                                 />
                                 {
                                     !(allowLoginPW)
@@ -137,11 +136,11 @@ class Register extends React.Component {
                             }
                         </div>
                         <div className="lh-copy mt3">
-                            <p onClick={()=>onRouteChange('signin')} className="f6 link dim black db pointer">Sign In</p>
+                            <p onClick={() => onRouteChange('signin')} className="f6 link dim black db pointer">Sign In</p>
                         </div>
                     </div>
                 </main>
-            </article >
+            </form >
         )
     }
 }
