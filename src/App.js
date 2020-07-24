@@ -33,6 +33,7 @@ class App extends Component {
     this.state = initialState;
   }
 
+  // Calculate the bounding box for the face(s)
   calculateFaceLocation = (data) => {
     let temp_results = data.outputs.map(items => {
       if (items.data.regions) {
@@ -93,7 +94,7 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({ imageURL: this.state.input })
-    fetch('https://murmuring-stream-43663.herokuapp.com/imgApi', {
+    fetch('https://smartbrain-backend-api.herokuapp.com/imgApi', {
       method: 'post',
       headers: {
         'content-type': 'application/json'
@@ -105,9 +106,8 @@ class App extends Component {
       .then(res => res.json())
       .then(response => {
         if (response) {
-          var faceLocation = this.calculateFaceLocation(response);
-          console.log(`Before fetch; ${this.state.numberOfFaces}`);
-          fetch('https://murmuring-stream-43663.herokuapp.com/image', {
+          this.displayFaceBox(this.calculateFaceLocation(response));
+          fetch('https://smartbrain-backend-api.herokuapp.com/image', {
             method: 'put',
             headers: {
               'content-type': 'application/json'
@@ -124,7 +124,7 @@ class App extends Component {
             })
             .catch(e => console.log(e));
         }
-        this.displayFaceBox(faceLocation);
+        // this.displayFaceBox(this.calculateFaceLocation(response));
       })
       .catch(err => console.error(err));
   }
